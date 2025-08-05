@@ -1,0 +1,111 @@
+{
+  "name": "customer service chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        -112
+      ],
+      "id": "239c94be-7691-41d1-92af-8b9cf79d2e93",
+      "name": "When chat message received",
+      "webhookId": "977b07cf-a6c9-47cd-8c34-e67d4bf04b9c"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are an intelligent AI-powered customer support assistant. Your job is to answer customer queries based on a set of predefined frequently asked questions (FAQs). Use natural language processing techniques to understand user intent, match their question with the most relevant FAQ, and provide a clear, accurate, and helpful response.\"\n\n Your chatbot should be able to:\n\nUnderstand variations of the same question\n\nPreprocess and clean both user input and FAQ data using libraries like NLTK or SpaCy\n\nMatch questions using cosine similarity or semantic matching\n\nReturn the most appropriate answer with minimal latency\n(Optional) Provide responses via a basic chat UI for user interaction\nWhere is my order?\n\nHow can I track my shipment?\n\nWhat is your return policy?\n\nDo you ship internationally?\n\nCan I change my delivery address after placing an order?\n\nHow do I cancel my order?\nWhat payment methods do you accept?\nI received a damaged item. What should I do?\nHow long does delivery usually take?\nDo you offer cash on delivery? \nHow do I reset my password?\n\nCan I upgrade my subscription plan?\n\nIs there a free trial available?\n\nHow do I contact technical support?\n\nWhat happens if I miss a payment?\n\nIs my data secure on your platform?\n\nHow can I delete my account?\n\nDo you offer API access?\n\nCan I integrate this with other tools like Slack or Google Drive?\n\nI’m getting an error — how can I fix it? {{ $json.chatInput }}\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        -112
+      ],
+      "id": "b19e2bd7-1599-42dc-870a-b0eee9820f97",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        128
+      ],
+      "id": "0f78ce19-7e12-4be2-affe-3db5eb1c0c35",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        352,
+        112
+      ],
+      "id": "98bd22ed-e37e-4f89-ad97-7de454c842e8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "N3674kMFuZfRutPB",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "11f4d7cc-14b8-4473-a76b-23b12f28b9f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4702efc4cb1c1a88351134dc0e1e735737c6b35d17afe982fe8b631febb5d281"
+  },
+  "id": "9LbF4TLEKbb9mZsc",
+  "tags": []
+}
